@@ -1,25 +1,21 @@
-from pprint import pprint
-from urllib.parse import urlencode
+# from pprint import pprint
+# from urllib.parse import urlencode
 import requests
 
 
-AUTH_URL = 'https://oauth.yandex.ru/authorize'
-
-APP_ID = 'd2148f05297942ea8e2827526d441e37'
-
-auth_data = {
-    'response_type': 'token',
-    'client_id': APP_ID
-}
-
-# print('?'.join((AUTH_URL, urlencode(auth_data))))
-
-token = 'AQAAAAAlyLWCAAT0tfqjOnO75k2vopdUfE4T6vA'
-# params = {
-#     'oauth_token': token
+# AUTH_URL = 'https://oauth.yandex.ru/authorize'
+# APP_ID = 'd2148f05297942ea8e2827526d441e37'
+#
+# auth_data = {
+#     'response_type': 'token',
+#     'client_id': APP_ID
 # }
 #
-# response = requests.get('https://api-metrika.yandex.ru/management/v1/counters', params)
+# print('?'.join((AUTH_URL, urlencode(auth_data))))
+
+
+TOKEN = 'AQAAAAAlyLWCAAT0tfqjOnO75k2vopdUfE4T6vA'
+
 
 class YaMetrika:
 
@@ -34,10 +30,13 @@ class YaMetrika:
         }
 
         response = requests.get('https://api-metrika.yandex.ru/stat/v1/data', params=params)
-        visits, pageviews, users = [m for m in response.json()['data'][0]['metrics']]
-        return visits, pageviews, users
+        visits, page_views, users = [metric for metric in response.json()['data'][0]['metrics']]
+        dict_metric = {'visits': visits, 'page_views': page_views, 'users': users}
+
+        return dict_metric
 
 
-user1 = YaMetrika(token)
-print(user1.get_metrics())
+my_metric = YaMetrika(TOKEN)
+print(my_metric.get_metrics())
+
 
